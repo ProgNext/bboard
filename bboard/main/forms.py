@@ -6,6 +6,10 @@ from .models import *
 from .apps import user_registered
 
 
+class SearchForm(forms.Form):
+    keyword = forms.CharField(required=False, max_length=20, label='')
+
+
 class SubRubricForm(forms.ModelForm):
     super_rubric = forms.ModelChoiceField(queryset=SuperRubric.objects.all(), empty_label=None,
                                           label='Надрубрика', required=True)
