@@ -19,6 +19,10 @@ from .forms import *
 from .utilities import *
 
 
+def by_rubric(request, pk):
+    pass
+
+
 class DeleteUserView(LoginRequiredMixin, DeleteView):
     model = AdvUser
     template_name = 'main/delete_user.html'
