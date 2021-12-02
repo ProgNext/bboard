@@ -1,9 +1,20 @@
 from django import forms
+from django.forms import inlineformset_factory
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 
 from .models import *
 from .apps import user_registered
+
+
+class BbForm(forms.ModelForm):
+    class Meta:
+        model = Bb
+        fields = '__all__'
+        widgets = {'author': forms.HiddenInput}
+
+
+AIFormSet = inlineformset_factory(Bb, AdditionalImage, fields='__all__')
 
 
 class SearchForm(forms.Form):
