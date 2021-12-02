@@ -6,6 +6,13 @@ from .forms import *
 from .utilities import send_activation_notification
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('author', 'bb',  'created_at')
+
+
+class CommentInline(admin.TabularInline):
+    model = Comment
+
 
 class AdditionalImageInline(admin.TabularInline):
     model = AdditionalImage
@@ -14,7 +21,8 @@ class AdditionalImageInline(admin.TabularInline):
 class BbAdmin(admin.ModelAdmin):
     list_display = ('rubric', 'title', 'content', 'author', 'created_at')
     fields = (('rubric', 'author'), 'title', 'content', 'price', 'contacts', 'image', 'is_active')
-    inlines = (AdditionalImageInline,)
+    inlines = (AdditionalImageInline, CommentInline)
+
 
 class SubRubricAdmin(admin.ModelAdmin):
     form = SubRubricForm
@@ -34,7 +42,10 @@ def send_activation_notification(modeladmin, request, queryset):
         if not rec.is_activated:
             send_activation_notification(rec)
     modeladmin.message_user(request, 'Письма с требованиями отправлены')
+
+
 send_activation_notification.short_description = 'Отправка писем с требованиями активации'
+
 
 class NonactivatedFilter(admin.SimpleListFilter):
     title = 'Прошли активацию?'
@@ -76,3 +87,4 @@ admin.site.register(AdvUser, AdvUserAdmin)
 admin.site.register(SuperRubric, SuperRubricAdmin)
 admin.site.register(SubRubric, SubRubricAdmin)
 admin.site.register(Bb, BbAdmin)
+admin.site.register(Comment, CommentAdmin)
